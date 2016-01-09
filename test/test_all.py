@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+# This file is part of easydms.
 # Copyright (c) 2015 Peter Kessen
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -23,25 +24,24 @@
 #
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
-from setuptools import setup
+"""Test core funtionalities."""
+
+from _common import TestCase
+import sys
+
+from travis_argparse import main, SimpleCmdException, ExtendedSub1CmdException
 
 
-setup(
-    name='travis_argparse',
-    version='0.0.0',
-    description='test for argparse on travis',
-    author='Peter Kessen',
-    author_email='p.kessen@kessen-peter.de',
-    license='MIT',
-    platforms='ALL',
-    test_suite='test.testall.suite',
-    include_package_data=True,  # Install plugin resources.
+class TestArgparse(TestCase):
+    def setUp(self):
+        super(TestArgparse, self).setUp()
 
-    packages=[
-        'travis_argparse',
-    ],
+    def test_simple(self):
+        sys.argv = ["prog", "simple"]
+        with self.assertRaises(SimpleCmdException):
+            main()
 
-    classifiers=[
-        'Programming Language :: Python :: 3.4',
-    ],
-)
+    def test_extended_sub1(self):
+        sys.argv = ["prog", "extended", "sub1"]
+        with self.assertRaises(ExtendedSub1CmdException):
+            main()
